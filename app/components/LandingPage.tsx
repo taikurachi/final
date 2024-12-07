@@ -8,7 +8,7 @@ const LandingPage: FC = () => {
     router.push("/pages/sign-up");
   };
   return (
-    <main className="flex flex-col h-[100dvh] justify-center items-center">
+    <main className="flex flex-col justify-center items-center">
       <div className="flex flex-col gap-5">
         <h1 className="text-6xl font-extrabold">
           Post your oufits and earn rewards.

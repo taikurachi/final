@@ -3,8 +3,11 @@ import { FC, useEffect, useState } from "react";
 import Button from "./utils/Button";
 import { useRouter } from "next/navigation";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth, db, doc, setDoc } from "@/app/firebase/config.js";
+import { auth } from "@/app/firebase/config.js";
 import { updateProfile, signInAnonymously } from "firebase/auth";
+import { firestore } from "@/app/firebase/config.js";
+import { doc, setDoc } from "firebase/firestore";
+import getCurrentDate from "../utilsFn";
 
 const SignUpForm: FC = () => {
   const [username, setUsername] = useState("");
@@ -13,22 +16,6 @@ const SignUpForm: FC = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
 
-  // const saveUserToFirestore = async (
-  //   userCredential: UserCredential,
-  //   username: string
-  // ) => {
-  //   const user = userCredential.user;
-  //   const userRef = doc(db, "users", user.uid);
-  //   try {
-  //     await setDoc(userRef, {
-  //       username,
-  //       email: user.email,
-  //       createdAt: new Date(),
-  //     });
-  //   } catch {
-  //     setErrorMsg("Error saving user to Firestore:");
-  //   }
-  // };
   const [createUserWithEmailAndPassword, userCredential, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
 
@@ -44,10 +31,18 @@ const SignUpForm: FC = () => {
     }
 
     const res = await createUserWithEmailAndPassword(email, password);
+
     if (res !== undefined) {
       await updateProfile(res.user, {
         displayName: username,
       });
+      const userDocRef = doc(firestore, "users", res.user.uid);
+      await setDoc(userDocRef, {
+        points: 0,
+        streak: 0,
+        lastPostDate: null,
+      });
+
       router.push("/");
     }
 
