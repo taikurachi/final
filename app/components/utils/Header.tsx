@@ -4,8 +4,8 @@ import { FC } from "react";
 import Image from "next/image";
 const Header: FC = () => {
   const router = useRouter();
-  const goToSignUp = () => router.push("/pages/sign-up");
-  const goToLogin = () => router.push("/pages/login");
+  const goTo = (path: string) => router.push(path);
+
   return (
     <header className="flex p-8 w-[20vw]">
       <nav className="flex flex-col gap-11">
@@ -24,7 +24,7 @@ const Header: FC = () => {
             <span>Sign up</span>
           </li>
           <li
-            onClick={goToSignUp}
+            onClick={() => goTo("/pages/login")}
             className="font-bold cursor-pointer flex justify-center gap-4 items-center"
           >
             <Image
@@ -36,14 +36,14 @@ const Header: FC = () => {
             <span>Logout</span>
           </li>
           <li
-            onClick={goToSignUp}
+            onClick={() => goTo("/")}
             className="font-bold cursor-pointer flex gap-4 items-center"
           >
             <Image src="/home.svg" width={30} height={30} alt="home image" />
             <span>Home</span>
           </li>
           <li
-            onClick={goToSignUp}
+            onClick={() => goTo("/market")}
             className="font-bold cursor-pointer flex gap-4 items-center"
           >
             <Image
@@ -55,7 +55,7 @@ const Header: FC = () => {
             <span>Market</span>
           </li>
           <li
-            onClick={goToSignUp}
+            onClick={() => goTo("/gallery")}
             className="font-bold cursor-pointer flex gap-4 items-center"
           >
             <Image

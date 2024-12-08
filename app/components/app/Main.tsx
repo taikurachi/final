@@ -2,7 +2,7 @@
 import { FC } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config.js";
-import LandingPage from "./LandingPage";
+import LandingPage from "../landing/LandingPage";
 import MainPage from "./MainPage";
 
 const Main: FC = () => {

@@ -9,6 +9,8 @@ interface MainPageProps {
 }
 
 const MainPage: FC<MainPageProps> = ({ user }) => {
+  // const [points, setPoints]
+
   return (
     <main className="flex justify-center items-center gap-4">
       <div className="flex gap-4">

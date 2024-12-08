@@ -1,6 +1,6 @@
 import { User } from "firebase/auth";
 import { firestore } from "./firebase/config";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, DocumentReference } from "firebase/firestore";
 
 const getCurrentDate = (date: Date): string => {
   const month: number = date.getMonth() + 1;
@@ -10,16 +10,25 @@ const getCurrentDate = (date: Date): string => {
   return `${month}/${day}/${year}`;
 };
 
-const getUserData = async (user: User) => {
+interface UserData {
+  points: number;
+  streak: number;
+  lastPostDate: string;
+}
+
+interface UserDataReturn extends UserData {
+  userDocRef: DocumentReference;
+}
+
+const getUserData = async (user: User): Promise<UserDataReturn | null> => {
   const userDocRef = doc(firestore, "users", user.uid);
   const userDoc = await getDoc(userDocRef);
+
   if (!userDoc.exists()) {
-    // console.error("user not found");
-    console.log("user not found");
-    return;
+    return null;
   }
-  const userData = userDoc.data();
-  let { points, streak, lastPostDate } = userData;
-  return { points, streak, lastPostDate, userDocRef };
+
+  const userData = userDoc.data() as UserData;
+  return { ...userData, userDocRef };
 };
 export { getCurrentDate, getUserData };

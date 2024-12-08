@@ -1,7 +1,7 @@
 import { User } from "firebase/auth";
 import { FC, useState, useEffect } from "react";
 import Image from "next/image";
-import { getUserData } from "../utilsFn";
+import { getUserData } from "../../utilsFn";
 
 interface UserProfileProps {
   user: User;
@@ -37,7 +37,6 @@ const UserProfile: FC<UserProfileProps> = ({ user }) => {
     );
   }
 
-  // If user data is available, render the profile
   if (userData) {
     const { points, streak } = userData;
 

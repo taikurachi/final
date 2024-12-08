@@ -8,7 +8,7 @@ interface PostProps {
 const Post: FC<PostProps> = ({ post }) => {
   const createdTime: string = getCurrentDate(post.createdAt.toDate());
 
-  console.log(createdTime);
+
   return (
     <div className="p-4 bg-gray-200 rounded-lg snap-start select-none">
       <p className="font-bold">{post.username ?? "Guest user"}</p>
@@ -20,7 +20,7 @@ const Post: FC<PostProps> = ({ post }) => {
         alt="Post image"
         className="select-none pointer-events-none"
       />
-      {/* <p>{createdTime}</p> */}
+      <p>{createdTime}</p>
       <p>{post.caption}</p>
     </div>
   );

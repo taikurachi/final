@@ -7,7 +7,6 @@ import { auth } from "@/app/firebase/config.js";
 import { updateProfile, signInAnonymously } from "firebase/auth";
 import { firestore } from "@/app/firebase/config.js";
 import { doc, setDoc } from "firebase/firestore";
-import getCurrentDate from "../utilsFn";
 
 const SignUpForm: FC = () => {
   const [username, setUsername] = useState("");
@@ -75,8 +74,14 @@ const SignUpForm: FC = () => {
     <div className="p-10 flex justify-center items-center h-[100dvh]">
       <form className="border-black border rounded-xl p-10 flex flex-col gap-8">
         <h2 className="text-4xl font-extrabold text-center">Sign up</h2>
-        <p>
-          Create a free account to get started. Already have an account? Sign in
+        <p className="text-center self-center w-[80%]">
+          Create a free account to get started. Already have an account?{" "}
+          <span
+            className="underline cursor-pointer"
+            onClick={() => router.push("/pages/login")}
+          >
+            Log in
+          </span>
         </p>
         <div>
           <label htmlFor="username">Username:</label>
@@ -88,7 +93,6 @@ const SignUpForm: FC = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           ></input>
-          {/* <p className="text-red-600">{username} is already taken</p> */}
         </div>
         <div>
           <label htmlFor="email">Email:</label>

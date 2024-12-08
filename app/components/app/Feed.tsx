@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { getDocs, collection } from "firebase/firestore";
 import { firestore } from "@/app/firebase/config.js";
-import Post from "./Post";
+import Post from "../Post";
 
 const Feed: FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);

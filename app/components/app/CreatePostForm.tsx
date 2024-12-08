@@ -10,12 +10,12 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import { storage, firestore } from "../firebase/config.js";
+import { storage, firestore } from "../../firebase/config.js";
 import { useDropzone } from "react-dropzone";
 import { FC, useState, useCallback, useEffect } from "react";
 import { User } from "firebase/auth";
 import Image from "next/image.js";
-import { getCurrentDate, getUserData } from "../utilsFn";
+import { getCurrentDate, getUserData } from "../../utilsFn.js";
 
 interface CreatePostFormProps {
   user: User;
@@ -29,13 +29,12 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
   const [postCreated, setPostCreated] = useState(false);
 
   useEffect(() => {
-    console.log(user);
     const checkPost = async () => {
       const postsRef = collection(firestore, "posts");
       const q = query(
         postsRef,
         where("userId", "==", user.uid),
-        where("createdAt", "==", getCurrentDate(new Date()))
+        where("dateStr", "==", getCurrentDate(new Date()))
       );
       const querySnap = await getDocs(q);
       setPostCreated(!querySnap.empty ? true : false);
@@ -82,12 +81,14 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
     caption: string
   ) => {
     try {
-      const postRef = await addDoc(collection(firestore, "posts"), {
+      const date: Date = new Date();
+      await addDoc(collection(firestore, "posts"), {
         username: user.displayName,
         userId,
         imageURL,
         caption,
-        createdAt: new Date(),
+        createdAt: date,
+        dateStr: getCurrentDate(date),
       });
 
       setPostCreated(true);
@@ -99,9 +100,9 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
   const updateUserData = async (user: User) => {
     if (user.isAnonymous) return;
     try {
-      let { points, streak, lastPostDate, userDocRef } = await getUserData(
-        user
-      );
+      const res = await getUserData(user);
+      if (res === null) return;
+      let { points, streak, lastPostDate, userDocRef } = res;
       const currentDate = new Date();
 
       if (lastPostDate === null) {
