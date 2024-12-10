@@ -22,7 +22,7 @@ const Links: FC<LinksProps> = ({ path, type, text }) => {
         height={30}
         alt={`${type} image`}
       />
-      <span className="hidden custom:block">{text}</span>
+      <span className="hidden lg:block">{text}</span>
     </li>
   );
 };

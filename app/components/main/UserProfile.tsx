@@ -31,7 +31,7 @@ const UserProfile: FC<UserProfileProps> = ({ user }) => {
   }, [user]);
   if (loading) {
     return (
-      <section className="p-8 flex flex-col gap-5 bg-white rounded-b-lg">
+      <section className="p-8 flex flex-col gap-5 bg-white rounded-l-lg md:rounded-b-lg">
         <p>Loading...</p>
       </section>
     );
@@ -41,7 +41,7 @@ const UserProfile: FC<UserProfileProps> = ({ user }) => {
     const { points, streak } = userData;
 
     return (
-      <section className="p-8 flex flex-col gap-5 bg-white rounded-b-lg">
+      <section className="p-8 flex flex-col gap-5 bg-white rounded-l-lg md:rounded-b-lg">
         <h2 className="text-4xl font-bold">
           {user.displayName || "Guest user"}
         </h2>
@@ -57,7 +57,7 @@ const UserProfile: FC<UserProfileProps> = ({ user }) => {
     );
   }
   return (
-    <section className="p-8 flex flex-col gap-5 bg-white rounded-b-lg">
+    <section className="p-8 flex flex-col gap-5 bg-white rounded-l-lg md:rounded-b-lg">
       <h2 className="text-4xl font-bold">Guest user</h2>
       <p>No user data found. Sign up to track user data.</p>
     </section>

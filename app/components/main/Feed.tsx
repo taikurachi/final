@@ -1,11 +1,18 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, Timestamp } from "firebase/firestore";
 import { firestore } from "@/app/firebase/config.js";
-import Post from "./Post";
+import PostComponent from "@/app/components/main/Post";
+
+interface Post {
+  imageURL: string;
+  caption: string;
+  username: string;
+  createdAt: Timestamp;
+}
 
 const Feed: FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [startY, setStartY] = useState(0);
   const [scrollTop, setScrollTop] = useState(0);
@@ -15,7 +22,15 @@ const Feed: FC = () => {
   const fetchPosts = async () => {
     try {
       const querySnap = await getDocs(collection(firestore, "posts"));
-      const postsArray = querySnap.docs.map((doc) => doc.data());
+      const postsArray = querySnap.docs.map(
+        (doc) =>
+          ({
+            imageURL: doc.data().imageURL,
+            caption: doc.data().caption,
+            username: doc.data().username,
+            createdAt: doc.data().createdAt,
+          } as Post)
+      );
       setPosts(postsArray);
     } catch (e) {
       console.error(e);
@@ -27,7 +42,7 @@ const Feed: FC = () => {
     setScrollTop(containerRef.current?.scrollTop || 0);
     lastMousePosition.current = e.pageY;
   };
-  const handleMouseLeave = (e) => {
+  const handleMouseLeave = (): void => {
     setIsMouseDown(false);
   };
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -46,7 +61,7 @@ const Feed: FC = () => {
       lastMousePosition.current = y;
     });
   };
-  const handleMouseUp = () => {
+  const handleMouseUp = (): void => {
     setIsMouseDown(false);
     if (scrollTimeout.current) {
       cancelAnimationFrame(scrollTimeout.current);
@@ -67,7 +82,7 @@ const Feed: FC = () => {
       className="post-container flex flex-col gap-6 mt-5 overflow-y-scroll scrollbar-none h-[calc(100dvh-130px)]"
     >
       {posts && posts.length > 0 ? (
-        posts.map((post, i) => <Post post={post} key={i} />)
+        posts.map((post, i) => <PostComponent post={post} key={i} />)
       ) : (
         <p>No recent posts. Check again soon.</p>
       )}

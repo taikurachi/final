@@ -10,9 +10,9 @@ interface MainPageProps {
 
 const MainPage: FC<MainPageProps> = ({ user }) => {
   return (
-    <main className="flex justify-center items-center gap-4">
-      <div className="flex gap-4">
-        <section className="p-8 bg-white h-[100dvh] min-w-[400px]">
+    <main className="flex justify-center items-center gap-4 flex-1 w-full">
+      <div className="flex gap-4 md:flex-row flex-col w-full">
+        <section className="p-8 bg-white h-[100dvh] md:min-w-[400px] ">
           <h2 className="text-4xl font-bold">Recent posts</h2>
           <Feed />
         </section>

@@ -6,15 +6,14 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/config";
 import { signInAnonymously } from "firebase/auth";
 
-const LogInForm: FC = () => {
+const LoginForm: FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
   const router = useRouter();
 
-  const [signInWithEmailAndPassword, user, loading, error] =
-    useSignInWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,11 +31,11 @@ const LogInForm: FC = () => {
   };
 
   const handleGuestLogin = async () => {
-    setErrorMsg("");
     try {
       await signInAnonymously(auth);
+      console.log("this ");
       router.push("/");
-    } catch (e) {
+    } catch {
       setErrorMsg("Failed to login as guest. Please try again.");
     }
   };
@@ -84,7 +83,11 @@ const LogInForm: FC = () => {
           <Button className={"flex-1 text-center"} type="submit">
             Start sharing
           </Button>
-          <Button className={"flex-1 text-center"} onClick={handleGuestLogin}>
+          <Button
+            className={"flex-1 text-center"}
+            onClick={handleGuestLogin}
+            type="button"
+          >
             Continue as guest
           </Button>
         </div>
@@ -93,4 +96,4 @@ const LogInForm: FC = () => {
   );
 };
 
-export default LogInForm;
+export default LoginForm;

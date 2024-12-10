@@ -15,6 +15,8 @@ import { FC, useState, useCallback, useEffect } from "react";
 import { User } from "firebase/auth";
 import Image from "next/image.js";
 import { getCurrentDate, getUserData } from "@/app/utilsFn/utilsFn";
+import Button from "@/app/components/utils/Button";
+import { FirebaseError } from "firebase/app";
 
 interface CreatePostFormProps {
   user: User;
@@ -41,8 +43,8 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
     checkPost();
   }, [setPostCreated, user]);
 
-  const onDrop = useCallback((acceptedFile: FileList) => {
-    const file = acceptedFile[0];
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
     if (file.size > 5 * 1024 * 1024) {
       setErrorMsg(
         "File size is too large. Please upload a file smaller than 5mb."
@@ -59,18 +61,25 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: "image/*",
+    accept: {
+      "image/jpeg": [],
+      "image/png": [],
+      "image/webp": [],
+      "image/gif": [],
+    },
   });
 
-  const uploadImage = async (file, userId) => {
+  const uploadImage = async (file: File, userId: string) => {
     const storageRef = ref(storage, `posts/${userId}/${file.name}`);
     try {
       const snap = await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(snap.ref);
       console.log("file uploaded successfully", downloadURL);
       return downloadURL;
-    } catch (e) {
-      console.error("error uploading file", e.message);
+    } catch (e: unknown) {
+      if (e instanceof FirebaseError) {
+        console.error("error uploading file", e.message);
+      }
       throw new Error("file upload failed");
     }
   };
@@ -89,17 +98,7 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
         createdAt: date,
         dateStr: getCurrentDate(date),
       });
-      const userDocRef = doc(firestore, "users", user.uid);
-      const addNewPost = async (
-        userDocRef: DocumentReference,
-        newPost: Post
-      ) => {
-        const postsCollectionRef = collection(userDocRef, "posts");
-        await addDoc(postsCollectionRef, {
-          ...newPost,
-          createdAt: serverTimestamp(),
-        });
-      };
+
       setPostCreated(true);
     } catch (e) {
       console.error("error creating a post", e.message);
@@ -173,7 +172,7 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
         </div>
         <div>
           <label htmlFor="image upload">Upload Image: </label>
-          <div {...getRootProps()}>
+          <div {...getRootProps()} className="w-[220px]">
             <input {...getInputProps()} />
             {preview ? (
               <Image
@@ -186,7 +185,7 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
               />
             ) : (
               <p
-                className={`p-4 border border-dashed ${
+                className={`p-4 border border-dashed w-full ${
                   errorMsg
                     ? "border-red-500 text-red-500"
                     : "border-black text-black"
@@ -214,16 +213,16 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
             )}
           </div>
         </div>
-        <button
+        <Button
           type="submit"
           className="bg-black text-white btn-hover w-fit pt-2 pb-2 pl-4 pr-4 rounded-lg mt-3"
         >
           Post
-        </button>
+        </Button>
       </form>
     </section>
   ) : (
-    <div className="p-8 bg-white rounded-lg min-w-[360px] h-[300px]">
+    <div className="p-8 bg-white md:rounded-lg min-w-[360px] h-[300px] rounded-tl-lg">
       <h2 className="font-bold text-4xl">Create Post</h2>
       <p className="mt-4">You already posted today. Come back tomorrow :)</p>
     </div>

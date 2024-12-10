@@ -13,7 +13,9 @@ export default {
         foreground: "var(--foreground)",
       },
       screens: {
-        custom: "945px",
+        lg: "945px",
+        md: "900px",
+        sm: "550px",
       },
     },
   },
