@@ -1,6 +1,6 @@
 "use client";
-import { FC, useEffect, useState } from "react";
-import Button from "./utils/Button";
+import { FC, useState } from "react";
+import Button from "../utils/Button";
 import { useRouter } from "next/navigation";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config.js";
@@ -23,7 +23,8 @@ const SignUpForm: FC = () => {
     router.push("/");
   };
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!email || !password || !username) {
       setErrorMsg("Please provide email, password, and username.");
       return;
@@ -40,6 +41,7 @@ const SignUpForm: FC = () => {
         points: 0,
         streak: 0,
         lastPostDate: null,
+        posts: [],
       });
 
       router.push("/");
@@ -72,13 +74,16 @@ const SignUpForm: FC = () => {
 
   return (
     <div className="p-10 flex justify-center items-center h-[100dvh]">
-      <form className="border-black border rounded-xl p-10 flex flex-col gap-8">
+      <form
+        className="border-black border rounded-xl p-10 flex flex-col gap-8"
+        onSubmit={handleSignUp}
+      >
         <h2 className="text-4xl font-extrabold text-center">Sign up</h2>
         <p className="text-center self-center w-[80%]">
           Create a free account to get started. Already have an account?{" "}
           <span
             className="underline cursor-pointer"
-            onClick={() => router.push("/pages/login")}
+            onClick={() => router.push("/login")}
           >
             Log in
           </span>
@@ -120,7 +125,7 @@ const SignUpForm: FC = () => {
         {errorMsg && <p className="text-red-600">{errorMsg}</p>}
 
         <div className="flex w-full justify-between gap-9">
-          <Button className={"flex-1 text-center"} onClick={handleSignUp}>
+          <Button className={"flex-1 text-center"} type="submit">
             Start sharing
           </Button>
           <Button className={"flex-1 text-center"} onClick={handleGuestLogin}>

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Image from "next/image";
-import { getCurrentDate } from "@/app/utilsFn";
+import { getCurrentDate } from "@/app/utilsFn/utilsFn";
 interface PostProps {
   post: object;
 }
@@ -8,9 +8,8 @@ interface PostProps {
 const Post: FC<PostProps> = ({ post }) => {
   const createdTime: string = getCurrentDate(post.createdAt.toDate());
 
-
   return (
-    <div className="p-4 bg-gray-200 rounded-lg snap-start select-none">
+    <div className="flex flex-col gap-3 p-4 bg-gray-200 rounded-lg snap-start select-none">
       <p className="font-bold">{post.username ?? "Guest user"}</p>
 
       <Image
@@ -20,8 +19,8 @@ const Post: FC<PostProps> = ({ post }) => {
         alt="Post image"
         className="select-none pointer-events-none"
       />
-      <p>{createdTime}</p>
-      <p>{post.caption}</p>
+      <p className="font-bold">{createdTime}</p>
+      {post.caption && <p>{post.caption}</p>}
     </div>
   );
 };

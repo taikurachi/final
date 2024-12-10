@@ -1,7 +1,7 @@
 import { User } from "firebase/auth";
 import { FC, useState, useEffect } from "react";
 import Image from "next/image";
-import { getUserData } from "../../utilsFn";
+import { getUserData } from "../../utilsFn/utilsFn";
 
 interface UserProfileProps {
   user: User;

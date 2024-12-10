@@ -1,12 +1,8 @@
-import SignUpForm from "@/app/components/SignUpForm";
+import SignUpForm from "@/app/components/sign-up/SignUpForm";
 
 import { FC } from "react";
 const SignUp: FC = () => {
-  return (
-    <div>
-      <SignUpForm />
-    </div>
-  );
+  return <SignUpForm />;
 };
 
 export default SignUp;

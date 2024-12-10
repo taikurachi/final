@@ -1,10 +1,9 @@
 "use client";
 import { FC, useState } from "react";
-import Button from "./utils/Button";
+import Button from "../utils/Button";
 import { useRouter } from "next/navigation";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "../firebase/config"; // You'll need to create this
-import { FirebaseError } from "firebase/app";
+import { auth } from "../../firebase/config";
 import { signInAnonymously } from "firebase/auth";
 
 const LogInForm: FC = () => {
@@ -53,7 +52,7 @@ const LogInForm: FC = () => {
           Log in to your account. Don't have an account?{" "}
           <span
             className="underline cursor-pointer"
-            onClick={() => router.push("/pages/sign-up")}
+            onClick={() => router.push("/sign-up")}
           >
             Sign Up
           </span>

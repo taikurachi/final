@@ -5,17 +5,16 @@ import {
   addDoc,
   query,
   where,
-  getDoc,
   getDocs,
-  doc,
   updateDoc,
+  doc,
 } from "firebase/firestore";
 import { storage, firestore } from "../../firebase/config.js";
 import { useDropzone } from "react-dropzone";
 import { FC, useState, useCallback, useEffect } from "react";
 import { User } from "firebase/auth";
 import Image from "next/image.js";
-import { getCurrentDate, getUserData } from "../../utilsFn.js";
+import { getCurrentDate, getUserData } from "@/app/utilsFn/utilsFn";
 
 interface CreatePostFormProps {
   user: User;
@@ -90,7 +89,17 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
         createdAt: date,
         dateStr: getCurrentDate(date),
       });
-
+      const userDocRef = doc(firestore, "users", user.uid);
+      const addNewPost = async (
+        userDocRef: DocumentReference,
+        newPost: Post
+      ) => {
+        const postsCollectionRef = collection(userDocRef, "posts");
+        await addDoc(postsCollectionRef, {
+          ...newPost,
+          createdAt: serverTimestamp(),
+        });
+      };
       setPostCreated(true);
     } catch (e) {
       console.error("error creating a post", e.message);
@@ -102,29 +111,27 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
     try {
       const res = await getUserData(user);
       if (res === null) return;
-      let { points, streak, lastPostDate, userDocRef } = res;
+      const { points, streak, lastPostDate, userDocRef } = res;
       const currentDate = new Date();
 
-      if (lastPostDate === null) {
-        streak = 1;
-      } else {
-        const timeDiff =
-          currentDate.getTime() - lastPostDate.toDate().getTime();
-        const dayDiff = timeDiff / (1000 * 3600 * 24);
+      const timeDiff = lastPostDate
+        ? currentDate.getTime() - lastPostDate.toDate().getTime()
+        : 0;
+      const dayDiff = timeDiff / (1000 * 3600 * 24);
 
-        if (dayDiff <= 1) streak += 1;
-        else streak = 1;
-      }
-
-      if (streak === 3) points += 3;
-      if (streak === 10) points += 10;
-      if (streak === 50) points += 20;
-      if (streak === 100) points += 50;
-      points += 1;
+      const newStreak =
+        lastPostDate === null ? 1 : dayDiff <= 1 ? streak + 1 : 1;
+      const newPoints =
+        points +
+        1 +
+        (newStreak === 3 ? 3 : 0) +
+        (newStreak === 10 ? 10 : 0) +
+        (newStreak === 50 ? 20 : 0) +
+        (newStreak === 100 ? 50 : 0);
 
       await updateDoc(userDocRef, {
-        points: points,
-        streak: streak,
+        points: newPoints,
+        streak: newStreak,
         lastPostDate: currentDate,
       });
       console.log("got here successfully");
