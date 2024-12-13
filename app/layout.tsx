@@ -3,12 +3,12 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 const figTree = localFont({
-  src: "fonts/FigTree-VariableFont_wght.ttf",
+  src: "fonts/Figtree-VariableFont_wght.ttf",
   variable: "--font-figtree",
   weight: "100 900",
 });
 const figTreeItalic = localFont({
-  src: "fonts/FigTree-Italic-VariableFont_wght.ttf",
+  src: "fonts/Figtree-Italic-VariableFont_wght.ttf",
   variable: "--font-italic-figtree",
   weight: "100 900",
 });
