@@ -1,10 +1,7 @@
 "use client";
-import { FC, useState } from "react";
-import MarketProduct from "./MarketProduct";
+import { FC } from "react";
 
 const MarketPage: FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-
   return (
     <main className="flex justify-center items-center gap-4 flex-1">
       <div className="p-8 bg-white h-[100dvh] w-full">

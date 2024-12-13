@@ -2,7 +2,7 @@ import { User } from "firebase/auth";
 import { FC, useState, useEffect } from "react";
 import Image from "next/image";
 import { getUserData } from "../../utilsFn/utilsFn";
-import { Timestamp } from "firebase/firestore";
+import { DocumentReference, Timestamp } from "firebase/firestore";
 
 interface UserProfileProps {
   user: User;
@@ -13,7 +13,7 @@ const UserProfile: FC<UserProfileProps> = ({ user }) => {
     points: number;
     streak: number;
     lastPostDate: Timestamp | Date | null;
-    userDocRef?: any;
+    userDocRef?: DocumentReference;
   } | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 

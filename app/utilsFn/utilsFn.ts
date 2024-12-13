@@ -23,7 +23,7 @@ const getCurrentDate = (date: Date): string => {
 interface UserData {
   points: number;
   streak: number;
-  lastPostDate: Timestamp | Date;
+  lastPostDate: Timestamp | Date | null;
 }
 
 interface UserDataReturn extends UserData {

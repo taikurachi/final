@@ -16,7 +16,7 @@ import Image from "next/image.js";
 import { getCurrentDate, getUserData } from "@/app/utilsFn/utilsFn";
 import Button from "@/app/components/utils/Button";
 import { FirebaseError } from "firebase/app";
-
+import { Timestamp } from "firebase/firestore";
 interface CreatePostFormProps {
   user: User;
 }
@@ -115,7 +115,10 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
       const currentDate = new Date();
 
       const timeDiff = lastPostDate
-        ? currentDate.getTime() - lastPostDate.toDate().getTime()
+        ? currentDate.getTime() -
+          (lastPostDate instanceof Timestamp
+            ? lastPostDate.toDate().getTime()
+            : lastPostDate.getTime())
         : 0;
       const dayDiff = timeDiff / (1000 * 3600 * 24);
 

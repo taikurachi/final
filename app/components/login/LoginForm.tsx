@@ -48,7 +48,7 @@ const LoginForm: FC = () => {
       >
         <h2 className="text-4xl font-extrabold text-center">Log in</h2>
         <p className="text-center">
-          Log in to your account. Don't have an account?{" "}
+          Log in to your account. Don&apos;t have an account?{" "}
           <span
             className="underline cursor-pointer"
             onClick={() => router.push("/sign-up")}

@@ -1,5 +1,5 @@
 "use client";
-import { auth, firestore } from "@/app/firebase/config";
+import { auth } from "@/app/firebase/config";
 import { FC, useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getUserPosts } from "@/app/utilsFn/utilsFn";
@@ -13,7 +13,7 @@ interface Post {
 }
 
 const Gallery: FC = () => {
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
