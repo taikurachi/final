@@ -30,7 +30,15 @@ interface UserDataReturn extends UserData {
   userDocRef: DocumentReference;
 }
 
-const getUserPosts = async (userId: string) => {
+interface Post {
+  id: string;
+  imageURL: string;
+  caption: string;
+  dateStr: string;
+  createdAt: Date;
+}
+
+const getUserPosts = async (userId: string): Promise<Post[]> => {
   const postsRef = collection(firestore, "posts");
   const q = query(
     postsRef,
@@ -42,7 +50,7 @@ const getUserPosts = async (userId: string) => {
   return querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  }));
+  })) as Post[];
 };
 
 const getUserData = async (user: User): Promise<UserDataReturn | null> => {

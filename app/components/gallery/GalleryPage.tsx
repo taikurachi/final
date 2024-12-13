@@ -27,7 +27,7 @@ const Gallery: FC = () => {
       try {
         setIsLoading(true);
         const userPosts = await getUserPosts(user.uid);
-        if (userPosts.length === 0) {
+        if (!userPosts || userPosts.length === 0) {
           setError("No posts found");
           return;
         }
