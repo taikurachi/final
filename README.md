@@ -1,5 +1,8 @@
 Bereal & Instagram inspired full-stack social media app built with Next.js, React.js, TypeScript, TailwindCSS, Figma, and Firebase.
 
+Live:
+https://fitr-h3qk2s9bk-taiseis-projects-c252a918.vercel.app/
+
 Demo:
 
 https://github.com/user-attachments/assets/0f8854e6-3258-412f-a785-b69970f6a774
