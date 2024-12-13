@@ -9,6 +9,7 @@ import {
   orderBy,
   collection,
   getDocs,
+  Timestamp,
 } from "firebase/firestore";
 
 const getCurrentDate = (date: Date): string => {
@@ -22,7 +23,7 @@ const getCurrentDate = (date: Date): string => {
 interface UserData {
   points: number;
   streak: number;
-  lastPostDate: string;
+  lastPostDate: Timestamp | Date;
 }
 
 interface UserDataReturn extends UserData {

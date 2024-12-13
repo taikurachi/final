@@ -7,7 +7,6 @@ import {
   where,
   getDocs,
   updateDoc,
-  doc,
 } from "firebase/firestore";
 import { storage, firestore } from "../../firebase/config.js";
 import { useDropzone } from "react-dropzone";
@@ -100,8 +99,10 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
       });
 
       setPostCreated(true);
-    } catch (e) {
-      console.error("error creating a post", e.message);
+    } catch (e: unknown) {
+      if (e instanceof FirebaseError) {
+        console.error("error creating a post", e.message);
+      }
     }
   };
 
@@ -134,14 +135,16 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
         lastPostDate: currentDate,
       });
       console.log("got here successfully");
-    } catch (e) {
-      console.error("error happened", e.message);
+    } catch (e: unknown) {
+      if (e instanceof FirebaseError) {
+        console.error("error happened", e.message);
+      }
     }
   };
 
-  const handleCreatePost = async (e) => {
+  const handleCreatePost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!preview) {
+    if (!preview || !file) {
       setErrorMsg("Please select a file");
       return;
     }
@@ -150,8 +153,10 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
       const imageUrl = await uploadImage(file, userId);
       await createPost(userId, imageUrl, caption);
       await updateUserData(user);
-    } catch (e) {
-      console.error(e);
+    } catch (e: unknown) {
+      if (e instanceof FirebaseError) {
+        console.error("error happened", e.message);
+      }
     }
   };
   return !postCreated ? (
@@ -176,7 +181,7 @@ const CreatePostForm: FC<CreatePostFormProps> = ({ user }) => {
             <input {...getInputProps()} />
             {preview ? (
               <Image
-                src={preview}
+                src={preview as string}
                 alt="preview"
                 width={300}
                 height={300}

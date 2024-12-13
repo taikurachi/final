@@ -5,8 +5,8 @@ import Logo from "./Logo";
 
 const Header: FC = () => {
   return (
-    <header className="flex p-8 md:w-[20vw] w-full">
-      <nav className="flex flex-row sm:flex-col gap-11">
+    <header className="flex p-8 md:w-[20vw] w-full sm:w-fit">
+      <nav className="flex justify-between flex-row sm:flex-col gap-11 w-full">
         <Logo />
         <IconsList />
       </nav>

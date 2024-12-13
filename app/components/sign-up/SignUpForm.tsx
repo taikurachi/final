@@ -15,7 +15,7 @@ const SignUpForm: FC = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
 
-  const [createUserWithEmailAndPassword, userCredential, loading, error] =
+  const [createUserWithEmailAndPassword, , , error] =
     useCreateUserWithEmailAndPassword(auth);
 
   const handleGuestLogin = async () => {
@@ -128,7 +128,11 @@ const SignUpForm: FC = () => {
           <Button className={"flex-1 text-center"} type="submit">
             Start sharing
           </Button>
-          <Button className={"flex-1 text-center"} onClick={handleGuestLogin}>
+          <Button
+            className={"flex-1 text-center"}
+            type="button"
+            onClick={handleGuestLogin}
+          >
             Continue as guest
           </Button>
         </div>
